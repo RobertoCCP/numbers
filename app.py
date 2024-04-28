@@ -1,12 +1,17 @@
 from flask import Flask, render_template, request, jsonify
 import numpy as np
 from keras.models import load_model
+from keras.optimizers import Adam  # Importa el optimizador que usaste durante el entrenamiento
 from PIL import Image
 
 app = Flask(__name__)
 
 # Cargar el modelo entrenado
 model = load_model('mnist_cnn_model.h5')  # Asegúrate de que el modelo esté en el mismo directorio que este archivo
+
+# Compila el modelo después de cargarlo
+optimizer = Adam()  # Configura el optimizador
+model.compile(loss='categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 
 @app.route('/')
 def index():
